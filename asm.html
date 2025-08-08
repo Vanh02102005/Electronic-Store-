@@ -1,0 +1,2596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BTEC Shop</title>
+  <style>
+/* General body styling */
+body {
+  font-family: 'Roboto', Arial, sans-serif;
+  margin: 0;
+  background: #f8f9fa;
+  color: #333;
+}
+
+/* Header styling */
+.header {
+  background: linear-gradient(90deg, #0a2b55, #1e4a8c);
+  color: white;
+  padding: 15px 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.logo {
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.header input[type="text"] {
+  width: 250px;
+  padding: 8px;
+  border: none;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.header button {
+  padding: 8px 15px;
+  background: #ff6f61;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.header button:hover {
+  background: #e55a50;
+}
+
+/* Cart badge styling */
+.cart-badge {
+  background: #ff0000;
+  color: white;
+  font-size: 12px;
+  padding: 2px 6px;
+  border-radius: 50%;
+  position: relative;
+  top: -5px;
+  display: none;
+}
+
+/* Cart modal styling */
+.cart-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+}
+
+.cart-content {
+  background: white;
+  width: 90%;
+  max-width: 600px;
+  margin: 50px auto;
+  padding: 20px;
+  border-radius: 8px;
+  position: relative;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.close-cart {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 24px;
+  cursor: pointer;
+  color: #333;
+}
+
+.close-cart:hover {
+  color: #ff6f61;
+}
+
+.cart-content h2 {
+  margin-top: 0;
+  color: #0a2b55;
+}
+
+.cart-item {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #ddd;
+  padding: 10px 0;
+}
+
+.cart-item img {
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
+  margin-right: 15px;
+}
+
+.cart-item-details {
+  flex: 1;
+}
+
+.cart-item-details h4 {
+  margin: 0 0 5px;
+  font-size: 16px;
+  color: #0a2b55;
+}
+
+.cart-item-details p {
+  margin: 5px 0;
+  font-size: 14px;
+  color: #555;
+}
+
+.cart-item-details input {
+  width: 50px;
+  padding: 5px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.cart-item-details button {
+  padding: 5px 10px;
+  background: #ff6f61;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.cart-item-details button:hover {
+  background: #e55a50;
+}
+
+#cart-total {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 15px 0;
+  text-align: right;
+  color: #0a2b55;
+}
+
+.cart-content button {
+  padding: 10px 20px;
+  background: #ff6f61;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+  font-size: 16px;
+  display: block;
+  margin: 10px auto;
+}
+
+.cart-content button:hover {
+  background: #e55a50;
+}
+
+/* Navigation bar styling */
+.navbar {
+  background: #003366;
+  color: white;
+  display: flex;
+  padding: 15px 30px;
+  gap: 25px;
+  justify-content: center;
+}
+
+.navbar a {
+  color: white;
+  text-decoration: none;
+  font-size: 16px;
+  transition: color 0.3s;
+}
+
+.navbar a:hover {
+  color: #ff6f61;
+}
+
+/* Banner styling */
+.banner {
+  position: relative;
+  color: white;
+  text-align: center;
+  padding: 60px 20px;
+  margin: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  background: url('https://images.unsplash.com/photo-1516321318423-ffd0859918e1') no-repeat center center/cover;
+  transition: background 0.5s;
+}
+
+.banner h2 {
+  font-size: 36px;
+  margin: 0;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.banner p {
+  font-size: 18px;
+  margin: 10px 0;
+}
+
+.banner button.shop-now {
+  padding: 10px 20px;
+  background: #ff6f61;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.banner button.shop-now:hover {
+  background: #e55a50;
+}
+
+.banner .carousel-buttons {
+  position: absolute;
+  top: 50%;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  transform: translateY(-50%);
+}
+
+.banner button.carousel-btn {
+  background: rgba(0, 0, 0, 0.5);
+  border: none;
+  color: white;
+  font-size: 24px;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+.banner button.carousel-btn:hover {
+  background: rgba(0, 0, 0, 0.8);
+}
+
+/* Main container styling */
+.container {
+  display: flex;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Sidebar styling */
+.sidebar {
+  width: 250px;
+  background: #e9ecef;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar h3 {
+  margin: 0 0 10px;
+  border-bottom: 2px solid #ff6f61;
+  padding-bottom: 5px;
+  font-size: 20px;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.sidebar ul li {
+  margin: 10px 0;
+}
+
+.sidebar ul li a {
+  text-decoration: none;
+  color: #333;
+  font-size: 16px;
+  transition: color 0.3s;
+}
+
+.sidebar ul li a:hover {
+  color: #ff6f61;
+}
+
+/* Products grid styling */
+.products {
+  flex: 1;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.product {
+  background: white;
+  padding: 15px;
+  text-align: center;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.product:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.product img {
+  max-width: 100%;
+  height: 150px;
+  object-fit: contain;
+  border-radius: 5px;
+}
+
+.product h4 {
+  font-size: 18px;
+  margin: 10px 0;
+  color: #0a2b55;
+}
+
+.product p {
+  color: #555;
+  margin: 5px 0;
+}
+
+.product button {
+  padding: 8px 15px;
+  background: #ff6f61;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.product button:hover {
+  background: #e55a50;
+}
+
+#auth-links {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.user-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+#auth-links > div {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+#auth-links > div:hover {
+  opacity: 0.9;
+}
+.product a {
+  text-decoration: none;
+  color: #0a2b55;
+  margin-right: 10px;
+}
+
+.product a:hover {
+  color: #ff6f61;
+}
+
+/* Footer styling */
+.footer {
+  background: #0a2b55;
+  color: white;
+  padding: 40px 20px;
+  text-align: center;
+  font-size: 14px;
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.footer div {
+  flex: 1;
+  min-width: 200px;
+}
+
+.footer h4 {
+  font-size: 18px;
+  margin-bottom: 15px;
+}
+
+.footer a {
+  color: #ccc;
+  text-decoration: none;
+  display: block;
+  margin: 5px 0;
+}
+
+.footer a:hover {
+  color: #ff6f61;
+}
+
+/* Authentication form styling */
+.auth-form {
+  background: white;
+  padding: 40px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  max-width: 600px;
+  margin: 40px auto;
+  text-align: center;
+}
+
+/* Color selection styling */
+.color-option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 15px;
+  border: 2px solid #ddd;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 80px;
+  background: white;
+}
+
+.color-option:hover {
+  border-color: #ff6f61;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.color-option.selected {
+  border-color: #ff6f61;
+  background: #fff5f5;
+  box-shadow: 0 4px 12px rgba(255, 111, 97, 0.3);
+}
+
+.color-circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 3px solid #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  margin-bottom: 8px;
+}
+
+.color-name {
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+  text-align: center;
+}
+
+/* Color variants */
+.color-black { background: linear-gradient(45deg, #000, #333); }
+.color-white { background: linear-gradient(45deg, #fff, #f5f5f5); border: 1px solid #ddd; }
+.color-silver { background: linear-gradient(45deg, #c0c0c0, #e5e5e5); }
+.color-gold { background: linear-gradient(45deg, #ffd700, #ffed4e); }
+.color-blue { background: linear-gradient(45deg, #0066cc, #4da6ff); }
+.color-red { background: linear-gradient(45deg, #cc0000, #ff4444); }
+.color-green { background: linear-gradient(45deg, #006600, #44cc44); }
+.color-purple { background: linear-gradient(45deg, #660066, #cc44cc); }
+.color-pink { background: linear-gradient(45deg, #ff66b2, #ffb3d9); }
+.color-brown { background: linear-gradient(45deg, #8b4513, #d2691e); }
+.color-gray { background: linear-gradient(45deg, #808080, #c0c0c0); }
+.color-yellow { background: linear-gradient(45deg, #ffcc00, #ffff66); }
+.color-orange { background: linear-gradient(45deg, #ff6600, #ff9933); }
+.color-default { background: linear-gradient(45deg, #cccccc, #e5e5e5); }
+
+.auth-form h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #0a2b55;
+}
+
+.form-group {
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.form-group label {
+  display: block;
+  font-size: 16px;
+  margin-bottom: 5px;
+  color: #333;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.auth-form button {
+  padding: 10px 20px;
+  background: #ff6f61;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.auth-form button:hover {
+  background: #e55a50;
+}
+
+.auth-form p {
+  margin-top: 15px;
+  font-size: 14px;
+}
+
+.auth-form a {
+  color: #ff6f61;
+  text-decoration: none;
+}
+
+.auth-form a:hover {
+  text-decoration: underline;
+}
+  </style>
+</head>
+<body>
+<div class="header">
+  <div class="logo">Electronics Store</div>
+  <div style="display: flex; align-items: center; gap: 15px;">
+    <div style="display: flex; align-items: center;">
+      <input type="text" id="search-input" placeholder="Search products..." style="width: 300px; padding: 8px 12px; border: none; border-radius: 5px; font-size: 14px; margin-right: 10px;">
+      <button onclick="searchProducts()" style="padding: 8px 15px; background: #ff6f61; border: none; border-radius: 5px; color: white; cursor: pointer; transition: background-color 0.3s; margin-right: 5px;">Search</button>
+      <button onclick="clearSearch()" style="padding: 8px 15px; background: #6c757d; border: none; border-radius: 5px; color: white; cursor: pointer; transition: background-color 0.3s;">Clear</button>
+    </div>
+    <div id="auth-links">
+      <a href="login.html" style="color: white; text-decoration: none;">Login</a> |
+      <a href="register.html" style="color: white; text-decoration: none;">Register</a> |
+      <a href="cart.html" style="color: white; text-decoration: none;">🛒 Cart</a>
+    </div>
+  </div>
+</div>
+<div id="account-modal" class="cart-modal" style="display:none;">
+  <div class="cart-content" style="max-width: 300px;">
+    <span class="close-cart" onclick="toggleAccountModal()">×</span>
+    <div style="text-align: center; padding: 20px;">
+      <img id="user-avatar-modal" src="" alt="Avatar" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; margin-bottom: 15px; cursor:pointer;">
+      <input type="file" id="avatar-input-modal" accept="image/*" style="display: none;">
+      <div id="user-info-modal" style="margin-bottom: 20px;">
+        <h3 id="user-name-display-modal" style="margin: 8px 0 4px 0; font-size: 20px; color: #222;"></h3>
+        <p id="user-email-display-modal" style="color: #666; margin: 0 0 2px 0; font-size: 15px;"></p>
+        <p id="user-phone-display-modal" style="color: #666; margin: 0 0 2px 0; font-size: 15px;"></p>
+      </div>
+      <button id="edit-user-btn" style="padding: 8px 20px; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; margin-bottom: 10px;">Edit Info</button>
+      <form id="edit-user-form" style="display:none; margin-bottom: 10px; text-align:left;">
+        <label for="edit-name" style="font-size:14px;">Name:</label>
+        <input type="text" id="edit-name" placeholder="Enter your name" style="width:100%;margin-bottom:6px;">
+        <label for="edit-email" style="font-size:14px;">Email:</label>
+        <input type="email" id="edit-email" placeholder="Enter your email" style="width:100%;margin-bottom:6px;">
+        <label for="edit-phone" style="font-size:14px;">Phone:</label>
+        <input type="text" id="edit-phone" placeholder="Enter your phone number" style="width:100%;margin-bottom:10px;">
+        <button type="button" id="save-user-btn" style="width:100%;background:#28a745;color:white;padding:6px 0;border:none;border-radius:4px;">Save</button>
+        <button type="button" id="cancel-edit-btn" style="width:100%;background:#ccc;color:#222;padding:6px 0;border:none;border-radius:4px;margin-top:4px;">Cancel</button>
+      </form>
+      <button onclick="logout()" style="padding: 8px 20px; background: #ff6f61; color: white; border: none; border-radius: 5px; cursor: pointer;">Logout</button>
+    </div>
+  </div>
+</div>
+<script>
+// Cập nhật hàm updateUserInfo để lấy thêm phone
+function updateUserInfo() {
+  const authLinks = document.getElementById('auth-links');
+  const user = JSON.parse(localStorage.getItem('loggedInUser'));
+  if (user) {
+    const savedAvatar = localStorage.getItem(`avatar_${user.email}`);
+    const avatarUrl = savedAvatar || user.avatar || 'https://i.pravatar.cc/150?u=' + user.email;
+    authLinks.innerHTML = `
+      <div id="profile-trigger" style="display: flex; align-items: center; cursor: pointer;">
+        <img src="${avatarUrl}" class="user-avatar" alt="User Avatar">
+        <div style="display: flex; flex-direction: column; margin-left: 8px;">
+          <span style="color: white; font-weight: bold;">${user.name}</span>
+          <span style="color: #ccc; font-size: 12px;">${user.email}</span>
+          <span style="color: #ccc; font-size: 12px;">${user.phone ? user.phone : ''}</span>
+        </div>
+      </div>
+      <a href="#" onclick="toggleCart()" style="color: white; text-decoration: none; margin-left: 15px;">🛒 Cart</a>
+    `;
+    // Gắn lại sự kiện click cho profile-trigger
+    setTimeout(function() {
+      var trigger = document.getElementById('profile-trigger');
+      if (trigger) trigger.onclick = toggleAccountModal;
+    }, 0);
+    // Cập nhật modal thông tin
+    document.getElementById('user-avatar-modal').src = avatarUrl;
+    document.getElementById('user-name-display-modal').textContent = user.name;
+    document.getElementById('user-email-display-modal').textContent = user.email;
+    document.getElementById('user-phone-display-modal').textContent = user.phone ? user.phone : '';
+  } else {
+    authLinks.innerHTML = `
+      <a href="login.html" style="color: white; text-decoration: none;">Login</a> |
+      <a href="register.html" style="color: white; text-decoration: none;">Register</a> |
+      <a href="cart.html" style="color: white; text-decoration: none;">🛒 Cart</a>
+    `;
+  }
+}
+// Sự kiện click vào avatar trong modal để đổi avatar
+window.addEventListener('DOMContentLoaded', function() {
+  const avatarModal = document.getElementById('user-avatar-modal');
+  const avatarInput = document.getElementById('avatar-input-modal');
+  if (avatarModal && avatarInput) {
+    avatarModal.onclick = function() {
+      avatarInput.click();
+    };
+    avatarInput.onchange = function(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const newAvatar = e.target.result;
+        avatarModal.src = newAvatar;
+        let user = JSON.parse(localStorage.getItem('loggedInUser')) || {};
+        user.avatar = newAvatar;
+        localStorage.setItem('loggedInUser', JSON.stringify(user));
+        localStorage.setItem(`avatar_${user.email}`, newAvatar);
+        updateUserInfo();
+      };
+      reader.readAsDataURL(file);
+    };
+  }
+});
+</script>
+  <div class="navbar">
+    <a href="#all-products">All Products</a>
+    <a href="contact.html">Contact Us</a>
+  </div>
+  <div class="banner" id="banner">
+    <h2>Discover the Latest Electronics!</h2>
+    <p>Get up to 20% off on selected items this month!</p>
+    <button class="shop-now" onclick="showAllProducts()">Shop Now</button>
+    <div class="carousel-buttons">
+      <button class="carousel-btn" onclick="prevSlide()">❮</button>
+      <button class="carousel-btn" onclick="nextSlide()">❯</button>
+    </div>
+  </div>
+  <div class="container">
+    <div class="sidebar">
+      <h3>Categories</h3>
+      <ul id="category-list">
+        <li><a href="#" onclick="filterByCategory('Earphones & Headphones'); return false;">Earphones & Headphones</a></li>
+        <li><a href="#" onclick="filterByCategory('Bluetooth Speakers'); return false;">Bluetooth Speakers</a></li>
+        <li><a href="#" onclick="filterByCategory('Power Banks'); return false;">Power Banks</a></li>
+        <li><a href="#" onclick="filterByCategory('Laptops'); return false;">Laptops</a></li>
+        <li><a href="#" onclick="filterByCategory('Wearables'); return false;">Wearables</a></li>
+        <li><a href="#" onclick="filterByCategory('Cameras'); return false;">Cameras</a></li>
+        <li><a href="#" onclick="filterByCategory('Storage'); return false;">Storage</a></li>
+        <li><a href="#" onclick="filterByCategory('Computer Mice'); return false;">Computer Mice</a></li>
+        <li><a href="#" onclick="filterByCategory('Keyboards'); return false;">Keyboards</a></li>
+      </ul>
+      <h3>Brands</h3>
+      <ul id="brand-list">
+        <li><a href="#" onclick="filterByBrand('Logitech'); return false;">Logitech</a></li>
+        <li><a href="#" onclick="filterByBrand('Sony'); return false;">Sony</a></li>
+        <li><a href="#" onclick="filterByBrand('JBL'); return false;">JBL</a></li>
+        <li><a href="#" onclick="filterByBrand('Anker'); return false;">Anker</a></li>
+        <li><a href="#" onclick="filterByBrand('Samsung'); return false;">Samsung</a></li>
+        <li><a href="#" onclick="filterByBrand('Sandisk'); return false;">Sandisk</a></li>
+        <li><a href="#" onclick="filterByBrand('Apple'); return false;">Apple</a></li>
+        <li><a href="#" onclick="filterByBrand('Xiaomi'); return false;">Xiaomi</a></li>
+        <li><a href="#" onclick="filterByBrand('Asus'); return false;">Asus</a></li>
+        <li><a href="#" onclick="filterByBrand('Huawei'); return false;">Huawei</a></li>
+      </ul>
+    </div>
+    <div class="products" id="all-products">
+      <div class="product" data-category="Earphones & Headphones" data-brand="Sony">
+        <img src="c:/Users/nguye/OneDrive/Hình ảnh/html picture/ảnh 1.webp" alt="Sony WF-1000XM4">
+        <h4>Sony WF-1000XM4 Earbuds</h4>
+        <p>Price: 4.190.000đ</p>
+        <p style="font-size: 12px; color: #666;">Colors: Black, White</p>
+        <button class="details-btn"
+          data-name="Sony WF-1000XM4 Earbuds"
+          data-image="c:/Users/nguye/OneDrive/Hình ảnh/html picture/ảnh 1.webp"
+          data-description="Tai nghe chống ồn cao cấp, pin 8h, Bluetooth 5.2, sạc nhanh."
+          data-color="Black,White"
+          data-weight="7g"
+          data-frequency="20Hz-40kHz"
+          data-specs="Bluetooth: 5.2; Pin: 8h"
+        >Details</button>
+        <button class="add-to-cart" onclick="chooseColor('Sony WF-1000XM4 Earbuds')">Add to Cart</button>
+      </div>
+      <div class="product" data-category="Laptops" data-brand="Dell">
+        <img src="https://images.unsplash.com/photo-1519125323398-675f0ddb6308" alt="Dell XPS 13">
+        <h4>Dell XPS 13 Laptop</h4>
+        <p>Price: 32.990.000đ</p>
+        <button class="details-btn"
+          data-name="Dell XPS 13 Laptop"
+          data-image="https://images.unsplash.com/photo-1519125323398-675f0ddb6308"
+          data-description="Màn hình InfinityEdge, CPU Intel, 16GB RAM, 1TB SSD."
+          data-color="Black,Silver"
+          data-weight="1.2kg"
+          data-frequency="-"
+          data-specs="Display: InfinityEdge; CPU: Intel; RAM: 16GB; Storage: 1TB SSD"
+        >Details</button>
+        <button class="add-to-cart" onclick="chooseColor('Dell XPS 13 Laptop')">Add to Cart</button>
+      </div>
+      <div class="product" data-category="Power Banks" data-brand="Anker">
+        <img src="c:/Users/nguye/OneDrive/Hình ảnh/html picture/ảnh 9" alt="Anker PowerCore 20000mAh">
+        <h4>Anker PowerCore 20000mAh Power Bank</h4>
+        <p>Price: 960.000đ</p>
+        <p style="font-size: 12px; color: #666;">Colors: Black, White</p>
+        <button class="details-btn"
+          data-name="Anker PowerCore 20000mAh Power Bank"
+          data-image="c:/Users/nguye/OneDrive/Hình ảnh/html picture/ảnh 9"
+          data-description="Sạc dự phòng dung lượng lớn, 2 cổng USB, sạc nhanh."
+          data-color="Black,White"
+          data-weight="350g"
+          data-frequency="-"
+          data-specs="Capacity: 20000mAh; Output: 18W"
+        >Details</button>
+        <button class="add-to-cart" onclick="chooseColor('Anker PowerCore 20000mAh Power Bank')">Add to Cart</button>
+      </div>
+      <div class="product" data-category="Earphones & Headphones" data-brand="Sony">
+        <img src="c:/Users/nguye/OneDrive/Hình ảnh/html picture/ảnh 2.jpg" alt="Bose QuietComfort 45">
+        <h4>Bose QuietComfort 45 Headphones</h4>
+        <p>Price: 8.990.000đ</p>
+        <p style="font-size: 12px; color: #666;">Colors: Black, White</p>
+        <button class="details-btn"
+          data-name="Bose QuietComfort 45 Headphones"
+          data-image="c:/Users/nguye/OneDrive/Hình ảnh/html picture/ảnh 2.jpg"
+          data-description="Tai nghe chống ồn chủ động, pin 24h, âm thanh sống động."
+          data-color="Black,White"
+          data-weight="240g"
+          data-frequency="20Hz-20kHz"
+          data-specs="Bluetooth: 5.1; Pin: 24h"
+        >Details</button>
+        <button class="add-to-cart" onclick="chooseColor('Bose QuietComfort 45 Headphones')">Add to Cart</button>
+      </div>
+      <div class="product" data-category="Bluetooth Speakers" data-brand="JBL">
+        <img src="c:/Users/nguye/OneDrive/Hình ảnh/html picture/ảnh 3.jpg" alt="JBL Flip 6">
+        <h4>JBL Flip 6 Bluetooth Speaker</h4>
+        <p>Price: 2.990.000đ</p>
+        <p style="font-size: 12px; color: #666;">Colors: Blue, Red</p>
+        <button class="details-btn"
+          data-name="JBL Flip 6 Bluetooth Speaker"
+          data-image="c:/Users/nguye/OneDrive/Hình ảnh/html picture/ảnh 3.jpg"
+          data-description="Loa di động chống nước, pin 12h, âm bass mạnh mẽ."
+          data-color="Blue,Red"
+          data-weight="550g"
+          data-frequency="65Hz-20kHz"
+          data-specs="Bluetooth: 5.1; Pin: 12h"
+        >Details</button>
+        <button class="add-to-cart" onclick="chooseColor('JBL Flip 6 Bluetooth Speaker')">Add to Cart</button>
+      </div>
+      <div class="product" data-category="Wearables" data-brand="Apple">
+        <img src="c:/Users/nguye/OneDrive/Hình ảnh/html picture/ảnh 11.jpg" alt="Apple AirPods Pro">
+        <h4>Apple AirPods Pro</h4>
+        <p>Price: 5.990.000đ</p>
+        <p style="font-size: 12px; color: #666;">Colors: White</p>
+        <button class="details-btn"
+          data-name="Apple AirPods Pro"
+          data-image="c:/Users/nguye/OneDrive/Hình ảnh/html picture/ảnh 11.jpg"
+          data-description="Tai nghe true wireless, chống ồn chủ động, sạc không dây."
+          data-color="White"
+          data-weight="5.4g"
+          data-frequency="20Hz-20kHz"
+          data-specs="Bluetooth: 5.0; Pin: 4.5h"
+        >Details</button>
+        <button class="add-to-cart" onclick="chooseColor('Apple AirPods Pro')">Add to Cart</button>
+      </div>
+      <div class="product" data-category="Laptops" data-brand="Dell">
+        <img src="https://images.unsplash.com/photo-1519125323398-675f0ddb6308" alt="Dell XPS 13">
+        <h4>Dell XPS 13 Laptop</h4>
+        <p>Price: 32.990.000đ</p>
+        <p style="font-size: 12px; color: #666;">Colors: Black, Silver</p>
+        <button class="details-btn"
+          data-name="Dell XPS 13 Laptop"
+          data-image="https://images.unsplash.com/photo-1519125323398-675f0ddb6308"
+          data-description="Màn hình InfinityEdge, CPU Intel, 16GB RAM, 1TB SSD."
+          data-color="Black,Silver"
+          data-weight="1.2kg"
+          data-frequency="-"
+          data-specs="Display: InfinityEdge; CPU: Intel; RAM: 16GB; Storage: 1TB SSD"
+        >Details</button>
+        <button class="add-to-cart" onclick="chooseColor('Dell XPS 13 Laptop')">Add to Cart</button>
+      </div>
+      <div class="product" data-category="Storage" data-brand="Sandisk">
+        <img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca" alt="Sandisk 128GB USB 3.0">
+        <h4>Sandisk 128GB USB 3.0</h4>
+        <p>Price: 350.000đ</p>
+        <p style="font-size: 12px; color: #666;">Colors: Black, Silver</p>
+        <button class="details-btn"
+          data-name="Sandisk 128GB USB 3.0"
+          data-image="https://images.unsplash.com/photo-1465101046530-73398c7f28ca"
+          data-description="USB 3.0, dung lượng 128GB, tốc độ đọc 100MB/s, ghi 30MB/s."
+          data-color="Black,Silver"
+          data-weight="10g"
+          data-frequency="-"
+          data-specs="Capacity: 128GB; ReadSpeed: 100MB/s; WriteSpeed: 30MB/s"
+        >Details</button>
+        <button class="add-to-cart" onclick="chooseColor('Sandisk 128GB USB 3.0')">Add to Cart</button>
+      </div>
+      <div class="product" data-category="Laptops" data-brand="Apple">
+        <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9" alt="iPad Pro 12.9">
+        <h4>iPad Pro 12.9 (2022)</h4>
+        <p>Price: 28.990.000đ</p>
+        <p style="font-size: 12px; color: #666;">Colors: Black, Silver</p>
+        <button class="details-btn"
+          data-name="iPad Pro 12.9 (2022)"
+          data-image="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9"
+          data-description="Màn hình Liquid Retina XDR, CPU M1 Max, 16GB RAM, 1TB SSD."
+          data-color="Black,Silver"
+          data-weight="600g"
+          data-frequency="-"
+          data-specs="Display: Liquid Retina XDR; CPU: M1 Max; RAM: 16GB; Storage: 1TB SSD"
+        >Details</button>
+        <button class="add-to-cart" onclick="chooseColor('iPad Pro 12.9 (2022)')">Add to Cart</button>
+      </div>
+      <div class="product" data-category="Wearables" data-brand="Apple">
+        <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8" alt="Apple Watch Series 8">
+        <h4>Apple Watch Series 8</h4>
+        <p>Price: 10.990.000đ</p>
+        <button class="details-btn"
+          data-name="Apple Watch Series 8"
+          data-image="https://images.unsplash.com/photo-1517336714731-489689fd1ca8"
+          data-description="Màn hình Retina, CPU S8, 32GB SSD, pin 18h, chống nước."
+          data-color="Black,Silver,Gold"
+          data-weight="40g"
+          data-frequency="-"
+          data-specs="Display: Retina; CPU: S8; Storage: 32GB; Battery: 18h; WaterResistant: Yes"
+        >Details</button>
+        <button class="add-to-cart" onclick="chooseColor('iPad Pro 12.9 (2022)')">Add to Cart</button>
+      </div>
+      <div class="product" data-category="Cameras" data-brand="GoPro">
+        <img src="https://images.unsplash.com/photo-1512499617640-c2f999098c67" alt="GoPro HERO10">
+        <h4>GoPro HERO10 Black</h4>
+        <p>Price: 9.990.000đ</p>
+        <button class="details-btn"
+          data-name="GoPro HERO10 Black"
+          data-image="https://images.unsplash.com/photo-1512499617640-c2f999098c67"
+          data-description="Quay phim 5K, chống rung, pin 16h, chống nước."
+          data-color="Black"
+          data-weight="150g"
+          data-frequency="-"
+          data-specs="Resolution: 5K; Stabilization: Yes; Battery: 16h; WaterResistant: Yes"
+        >Details</button>
+        <button class="add-to-cart" onclick="chooseColor('GoPro HERO10 Black')">Add to Cart</button>
+      </div>
+      <div class="product" data-category="Wearables" data-brand="Fitbit">
+        <img src="https://images.unsplash.com/photo-1519125323398-675f0ddb6308" alt="Fitbit Charge 5">
+        <h4>Fitbit Charge 5</h4>
+        <p>Price: 3.490.000đ</p>
+        <button class="details-btn"
+          data-name="Fitbit Charge 5"
+          data-image="https://images.unsplash.com/photo-1519125323398-675f0ddb6308"
+          data-description="Theo dõi sức khỏe 24/7, pin 10 ngày, chống nước."
+          data-color="Black,Silver"
+          data-weight="30g"
+          data-frequency="-"
+          data-specs="HealthTracking: 24/7; Battery: 10 days; WaterResistant: Yes"
+        >Details</button>
+        <button class="add-to-cart" onclick="chooseColor('Fitbit Charge 5')">Add to Cart</button>
+      </div>
+      <div class="product" data-category="Storage" data-brand="WD">
+        <img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca" alt="WD My Passport 2TB">
+        <h4>WD My Passport 2TB</h4>
+        <p>Price: 2.190.000đ</p>
+        <button class="details-btn"
+          data-name="WD My Passport 2TB"
+          data-image="https://images.unsplash.com/photo-1465101046530-73398c7f28ca"
+          data-description="USB 3.0, dung lượng 2TB, pin 1000mAh, sạc nhanh."
+          data-color="Black,Silver"
+          data-weight="200g"
+          data-frequency="-"
+          data-specs="Capacity: 2TB; USB: 3.0; Battery: 1000mAh; FastCharge: Yes"
+        >Details</button>
+        <button class="add-to-cart" onclick="chooseColor('WD My Passport 2TB')">Add to Cart</button>
+      </div>
+      <!-- Thêm 10 sản phẩm mới bắt đầu từ đây -->
+      <div class="product" data-category="Earphones & Headphones" data-brand="Samsung">
+        <img src="https://images.unsplash.com/photo-1590658268037-6bf12165a8df" alt="Samsung Galaxy Buds Pro">
+        <h4>Samsung Galaxy Buds Pro</h4>
+        <p>Price: 3.990.000đ</p>
+        <button class="details-btn"
+          data-name="Samsung Galaxy Buds Pro"
+          data-image="https://images.unsplash.com/photo-1590658268037-6bf12165a8df"
+          data-description="Tai nghe không dây, chống ồn chủ động, pin 18h, chống nước IPX7."
+          data-color="Black,White,Purple"
+          data-weight="6.3g"
+          data-frequency="20Hz-20kHz"
+          data-specs="Bluetooth: 5.0; Pin: 18h; WaterResistant: IPX7"
+        >Details</button>
+        <button class="add-to-cart" onclick="chooseColor('Samsung Galaxy Buds Pro')">Add to Cart</button>
+      </div>
+      <div class="product" data-category="Bluetooth Speakers" data-brand="Sony">
+        <img src="https://images.unsplash.com/photo-1558379850-823f103f866a" alt="Sony SRS-XB43">
+        <h4>Sony SRS-XB43 Speaker</h4>
+        <p>Price: 4.590.000đ</p>
+        <button class="details-btn"
+          data-name="Sony SRS-XB43 Speaker"
+          data-image="https://images.unsplash.com/photo-1558379850-823f103f866a"
+          data-description="Loa Bluetooth EXTRA BASS, chống nước IP67, pin 24h, đèn LED."
+          data-color="Black,Blue,Red"
+          data-weight="2.4kg"
+          data-frequency="20Hz-20kHz"
+          data-specs="Bluetooth: 5.0; Pin: 24h; WaterResistant: IP67"
+        >Details</button>
+        <button class="add-to-cart" onclick="chooseColor('Sony SRS-XB43 Speaker')">Add to Cart</button>
+      </div>
+      <div class="product" data-category="Power Banks" data-brand="Xiaomi">
+        <img src="https://images.unsplash.com/photo-1585771724684-38269d6639fd" alt="Xiaomi Mi Power Bank 3 Pro">
+        <h4>Xiaomi Mi Power Bank 3 Pro</h4>
+        <p>Price: 790.000đ</p>
+        <button class="details-btn"
+          data-name="Xiaomi Mi Power Bank 3 Pro"
+          data-image="https://images.unsplash.com/photo-1585771724684-38269d6639fd"
+          data-description="Sạc dự phòng 20000mAh, sạc nhanh 45W, 2 cổng USB-C."
+          data-color="Black,Silver"
+          data-weight="435g"
+          data-frequency="-"
+          data-specs="Capacity: 20000mAh; Output: 45W; Ports: USB-C x2"
+        >Details</button>
+        <button class="add-to-cart" onclick="chooseColor('Xiaomi Mi Power Bank 3 Pro')">Add to Cart</button>
+      </div>
+      <div class="product" data-category="Laptops" data-brand="Asus">
+        <img src="https://images.unsplash.com/photo-1611186871348-b1ce696e52c9" alt="Asus ROG Zephyrus G14">
+        <h4>Asus ROG Zephyrus G14</h4>
+        <p>Price: 34.990.000đ</p>
+        <button class="details-btn"
+          data-name="Asus ROG Zephyrus G14"
+          data-image="https://images.unsplash.com/photo-1611186871348-b1ce696e52c9"
+          data-description="Laptop gaming, Ryzen 9, RTX 3060, 16GB RAM, 1TB SSD, màn hình 120Hz."
+          data-color="Black,White"
+          data-weight="1.7kg"
+          data-frequency="-"
+          data-specs="CPU: Ryzen 9; GPU: RTX 3060; RAM: 16GB; Storage: 1TB SSD; Display: 120Hz"
+        >Details</button>
+        <button class="add-to-cart" onclick="chooseColor('Asus ROG Zephyrus G14')">Add to Cart</button>
+      </div>
+      <div class="product" data-category="Wearables" data-brand="Huawei">
+        <img src="https://images.unsplash.com/photo-1551376347-075b0121a65b" alt="Huawei Watch GT 3">
+        <h4>Huawei Watch GT 3</h4>
+        <p>Price: 5.490.000đ</p>
+        <button class="details-btn"
+          data-name="Huawei Watch GT 3"
+          data-image="https://images.unsplash.com/photo-1551376347-075b0121a65b"
+          data-description="Smartwatch, màn hình AMOLED, pin 14 ngày, theo dõi sức khỏe."
+          data-color="Black,Silver,Brown"
+          data-weight="42.6g"
+          data-frequency="-"
+          data-specs="Display: AMOLED; Battery: 14 days; HealthTracking: Yes"
+        >Details</button>
+        <button class="add-to-cart" onclick="chooseColor('Huawei Watch GT 3')">Add to Cart</button>
+      </div>
+      <div class="product" data-category="Cameras" data-brand="Canon">
+        <img src="https://images.unsplash.com/photo-1512790182412-b19e6d62bc39" alt="Canon EOS R6">
+        <h4>Canon EOS R6</h4>
+        <p>Price: 49.990.000đ</p>
+        <button class="details-btn"
+          data-name="Canon EOS R6"
+          data-image="https://images.unsplash.com/photo-1512790182412-b19e6d62bc39"
+          data-description="Máy ảnh mirrorless, cảm biến full-frame, quay phim 4K, ống kính RF."
+          data-color="Black"
+          data-weight="680g"
+          data-frequency="-"
+          data-specs="Sensor: Full-frame; Video: 4K; LensMount: RF"
+        >Details</button>
+        <button class="add-to-cart" onclick="chooseColor('Canon EOS R6')">Add to Cart</button>
+      </div>
+      <div class="product" data-category="Storage" data-brand="Seagate">
+        <img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca" alt="Seagate Expansion 5TB">
+        <h4>Seagate Expansion 5TB</h4>
+        <p>Price: 3.290.000đ</p>
+        <button class="details-btn"
+          data-name="Seagate Expansion 5TB"
+          data-image="https://images.unsplash.com/photo-1465101046530-73398c7f28ca"
+          data-description="Ổ cứng gắn ngoài USB 3.0, dung lượng 5TB, thiết kế nhỏ gọn."
+          data-color="Black,Silver"
+          data-weight="230g"
+          data-frequency="-"
+          data-specs="Capacity: 5TB; Interface: USB 3.0"
+        >Details</button>
+        <button class="add-to-cart">Add to Cart</button>
+      </div>
+      <div class="product" data-category="Computer Mice" data-brand="SteelSeries">
+        <img src="https://images.unsplash.com/photo-1527814050087-3793815479db" alt="SteelSeries Rival 3">
+        <h4>SteelSeries Rival 3</h4>
+        <p>Price: 890.000đ</p>
+        <button class="details-btn"
+          data-name="SteelSeries Rival 3"
+          data-image="https://images.unsplash.com/photo-1527814050087-3793815479db"
+          data-description="Chuột gaming, cảm biến 8500 DPI, RGB, thiết kế công thái học."
+          data-color="Black,White"
+          data-weight="77g"
+          data-frequency="1000Hz"
+          data-specs="DPI: 8500; PollingRate: 1000Hz; RGB: Yes"
+        >Details</button>
+        <button class="add-to-cart">Add to Cart</button>
+      </div>
+      <div class="product" data-category="Keyboards" data-brand="Corsair">
+        <img src="https://images.unsplash.com/photo-1587829741301-dc798b83add3" alt="Corsair K70 RGB">
+        <h4>Corsair K70 RGB</h4>
+        <p>Price: 3.990.000đ</p>
+        <button class="details-btn"
+          data-name="Corsair K70 RGB"
+          data-image="https://images.unsplash.com/photo-1587829741301-dc798b83add3"
+          data-description="Bàn phím cơ gaming, switch Cherry MX, đèn RGB, khung nhôm."
+          data-color="Black"
+          data-weight="1.2kg"
+          data-frequency="1000Hz"
+          data-specs="Switch: Cherry MX; RGB: Yes; Frame: Aluminum"
+        >Details</button>
+        <button class="add-to-cart">Add to Cart</button>
+      </div>
+      <div class="product" data-category="Earphones & Headphones" data-brand="Audio-Technica">
+        <img src="https://images.unsplash.com/photo-1593784991095-a205069470b6" alt="Audio-Technica ATH-M50x">
+        <h4>Audio-Technica ATH-M50x</h4>
+        <p>Price: 4.290.000đ</p>
+        <button class="details-btn"
+          data-name="Audio-Technica ATH-M50x"
+          data-image="https://images.unsplash.com/photo-1593784991095-a205069470b6"
+          data-description="Tai nghe monitor, driver 45mm, âm thanh chính xác, gập xoay."
+          data-color="Black,White"
+          data-weight="285g"
+          data-frequency="15Hz-28kHz"
+          data-specs="Driver: 45mm; Frequency: 15Hz-28kHz; Foldable: Yes"
+        >Details</button>
+        <button class="add-to-cart">Add to Cart</button>
+      </div>
+    </div>
+  </div>
+  <!-- Cart Modal -->
+  <div id="cart-modal" class="cart-modal">
+    <div class="cart-content">
+      <span class="close-cart" onclick="toggleCart()">×</span>
+      <h2>Your Cart</h2>
+      <div id="cart-items"></div>
+      <p id="cart-total">Total: 0 VND</p>
+      <button onclick="clearCart()">Clear Cart</button>
+      <button onclick="checkout()">Buy Now</button>
+    </div>
+  </div>
+  <!-- Product Detail Modal -->
+  <div id="product-detail-modal" class="cart-modal">
+    <div class="cart-content" style="max-width: 400px;">
+      <span class="close-cart" onclick="toggleProductDetail()">×</span>
+      <h2 id="detail-name"></h2>
+      <img id="detail-image" src="" alt="" style="width: 100%; height: 150px; object-fit: contain; margin-bottom: 10px;">
+      <p id="detail-description"></p>
+      <p><strong>Color:</strong> <span id="detail-color"></span></p>
+      <div id="detail-extra"></div>
+      <div id="detail-specs"></div>
+    </div>
+  </div>
+  <!-- Color Selection Modal -->
+  <div id="color-modal" class="cart-modal">
+    <div class="cart-content" style="max-width: 450px;">
+      <span class="close-cart" onclick="closeColorModal()">×</span>
+      <h2>Chọn màu sản phẩm</h2>
+      <div style="margin: 15px 0;">
+        <h4 id="color-product-name" style="color: #0a2b55; margin-bottom: 10px;"></h4>
+        <p id="color-product-price" style="color: #666; margin-bottom: 15px;"></p>
+      </div>
+      <div id="color-options" style="margin: 20px 0; display: flex; flex-wrap: wrap; gap: 15px; justify-content: center;">
+        <!-- Color options will be populated here -->
+      </div>
+      <div style="text-align: center; margin-top: 20px;">
+        <button onclick="addToCartWithColor()" style="padding: 12px 25px; background: #ff6f61; border: none; border-radius: 5px; color: white; cursor: pointer; margin-right: 10px; font-size: 16px; font-weight: bold;">Thêm vào giỏ hàng</button>
+        <button onclick="closeColorModal()" style="padding: 12px 25px; background: #6c757d; border: none; border-radius: 5px; color: white; cursor: pointer; font-size: 16px;">Hủy</button>
+      </div>
+    </div>
+  </div>
+  
+  <div class="footer">
+    <div>
+      <h4>About Us</h4>
+      <p>Electronics Store offers the latest in electronics with top brands and competitive prices.</p>
+    </div>
+    <div>
+      <h4>Customer Service</h4>
+      <a href="#contact-info">Contact Us</a>
+      <a href="#">FAQs</a>
+    </div>
+    <div id="contact-info">
+      <h4>Contact Info</h4>
+      <p>Email: nguyenvuvietanh02102005@gmail.com</p>
+      <p>Phone: 0976150732</p>
+      <p>Address: 460 Thuy Khue Street, Hanoi, Vietnam</p>
+    </div>
+    <div>
+      <h4>Follow Us</h4>
+      <a href="https://www.facebook.com/nguyen.v.anh.345985" target="_blank">Facebook</a>
+    </div>
+  </div>
+  <script>
+    // Hàm cập nhật thông tin người dùng trên header
+  function updateUserInfo() {
+  const authLinks = document.getElementById('auth-links');
+  const user = JSON.parse(localStorage.getItem('loggedInUser'));
+  
+  if (user) {
+    // Kiểm tra avatar trong localStorage với key là email
+    const savedAvatar = localStorage.getItem(`avatar_${user.email}`);
+    const avatarUrl = savedAvatar || user.avatar || 'https://i.pravatar.cc/150?u=' + user.email;
+    
+    authLinks.innerHTML = `
+      <div id="profile-trigger" style="display: flex; align-items: center; cursor: pointer;">
+        <img src="${avatarUrl}" 
+             class="user-avatar" alt="User Avatar">
+        <div style="display: flex; flex-direction: column; margin-left: 8px;">
+          <span style="color: white; font-weight: bold;">${user.name}</span>
+          <span style="color: #ccc; font-size: 12px;">${user.email}</span>
+          <span style="color: #ccc; font-size: 12px;">${user.phone ? user.phone : ''}</span>
+        </div>
+      </div>
+      <a href="#" onclick="toggleCart()" style="color: white; text-decoration: none; margin-left: 15px;">🛒 Cart</a>
+    `;
+    
+    // Gắn lại sự kiện click cho profile-trigger
+    setTimeout(function() {
+      var trigger = document.getElementById('profile-trigger');
+      if (trigger) trigger.onclick = toggleAccountModal;
+    }, 0);
+    
+    // Cập nhật modal thông tin
+    document.getElementById('user-avatar-modal').src = avatarUrl;
+    document.getElementById('user-name-display-modal').textContent = user.name;
+    document.getElementById('user-email-display-modal').textContent = user.email;
+    document.getElementById('user-phone-display-modal').textContent = user.phone ? user.phone : '';
+  } else {
+    authLinks.innerHTML = `
+      <a href="login.html" style="color: white; text-decoration: none;">Login</a> |
+      <a href="register.html" style="color: white; text-decoration: none;">Register</a> |
+      <a href="cart.html" style="color: white; text-decoration: none;">🛒 Cart</a>
+    `;
+  }
+}
+// Hàm hiển/ẩn modal tài khoản
+function toggleAccountModal() {
+  const modal = document.getElementById('account-modal');
+  if (modal.style.display === 'block') {
+    modal.style.display = 'none';
+  } else {
+    updateUserInfo(); // Đảm bảo cập nhật thông tin mỗi lần mở modal
+    modal.style.display = 'block';
+  }
+}
+
+// Hàm đăng xuất
+function logout() {
+  const user = JSON.parse(localStorage.getItem('loggedInUser'));
+  if (user && user.email) {
+    localStorage.removeItem('loggedInUser');
+  } else {
+    localStorage.removeItem('loggedInUser');
+  }
+  window.location.href = 'asm.html';
+}
+
+window.addEventListener('DOMContentLoaded', function() {
+  updateUserInfo();
+  
+  // Kiểm tra nếu có thông tin đăng nhập trong URL (từ trang login)
+  const urlParams = new URLSearchParams(window.location.search);
+  const loggedInUser = urlParams.get('loggedInUser');
+  
+  if (loggedInUser) {
+    localStorage.setItem('loggedInUser', loggedInUser);
+    updateUserInfo();
+  }
+});
+    function renderProducts(products) {
+  const productsContainer = document.getElementById('all-products');
+  if (!productsContainer) return;
+  
+  productsContainer.innerHTML = '';
+  
+  products.forEach(product => {
+    productsContainer.innerHTML += `
+      <div class="product" data-category="${product.category}" data-brand="${product.brand}">
+        <img src="${product.image}" alt="${product.name}">
+        <h4>${product.name}</h4>
+        <p>Price: ${formatVND(product.price)}</p>
+        <button class="details-btn"
+          data-name="${product.name}"
+          data-image="${product.image}"
+          data-description="${product.description}"
+          data-color="${Array.isArray(product.color) ? product.color.join(', ') : product.color}"
+          data-weight="${product.weight}"
+          data-frequency="${product.frequency}"
+          data-specs="${product.specs ? Object.entries(product.specs).map(([k,v]) => `${k}: ${v}`).join('; ') : ''}"
+        >Details</button>
+        <button class="add-to-cart">Add to Cart</button>
+      </div>
+    `;
+  });
+
+  // Gắn lại sự kiện cho các nút sau khi render
+  attachEventListeners();
+}
+
+// Hàm gắn sự kiện cho các nút
+function attachEventListeners() {
+  document.querySelectorAll('.add-to-cart').forEach(btn => {
+    btn.onclick = function() {
+      const productDiv = btn.closest('.product');
+      const name = productDiv.querySelector('h4').textContent;
+      const price = productDiv.querySelector('p').textContent.replace('Price: ', '').replace('đ','').replace(/\./g,'').trim();
+      const image = productDiv.querySelector('img').src;
+      chooseColor(name); // Sử dụng hàm chọn màu
+    };
+  });
+
+  document.querySelectorAll('.details-btn').forEach(btn => {
+    btn.onclick = function() {
+      document.getElementById('detail-name').textContent = btn.dataset.name;
+      document.getElementById('detail-image').src = btn.dataset.image;
+      document.getElementById('detail-description').textContent = btn.dataset.description || 'No description.';
+      document.getElementById('detail-color').textContent = btn.dataset.color || 'Unknown';
+      
+      let extraInfo = '';
+      if (btn.dataset.weight) extraInfo += `<p><strong>Weight:</strong> ${btn.dataset.weight}</p>`;
+      if (btn.dataset.frequency) extraInfo += `<p><strong>Frequency:</strong> ${btn.dataset.frequency}</p>`;
+      document.getElementById('detail-extra').innerHTML = extraInfo;
+      
+      document.getElementById('detail-specs').innerHTML = btn.dataset.specs
+        ? `<strong>Specifications:</strong> <ul style='padding-left:20px;'><li>${btn.dataset.specs.replace(/; /g,'</li><li>')}</li></ul>`
+        : '<strong>Specifications:</strong> None';
+      
+      document.getElementById('product-detail-modal').style.display = 'block';
+    };
+  });
+}
+
+// Sửa lại hàm filterByBrand
+function filterByBrand(brand) {
+  const filtered = allProducts.filter(p => p.brand === brand);
+  renderProducts(filtered);
+}
+
+// Sửa lại hàm filterByCategory
+function filterByCategory(category) {
+  const filtered = allProducts.filter(p => p.category === category);
+  renderProducts(filtered);
+}
+
+// Hàm hiển thị tất cả sản phẩm
+function showAllProducts() {
+  renderProducts(allProducts);
+}
+
+// Chạy khi trang tải xong
+window.addEventListener('DOMContentLoaded', function() {
+  // Hiển thị tất cả sản phẩm ban đầu
+  showAllProducts();
+  
+  // Gắn sự kiện cho các liên kết category và brand
+  document.querySelectorAll('#category-list a').forEach(link => {
+    link.onclick = function(e) {
+      e.preventDefault();
+      const category = this.textContent;
+      filterByCategory(category);
+    };
+  });
+  
+  document.querySelectorAll('#brand-list a').forEach(link => {
+    link.onclick = function(e) {
+      e.preventDefault();
+      const brand = this.textContent;
+      filterByBrand(brand);
+    };
+  });
+  
+  // Gắn sự kiện cho nút "All Products" trong navbar
+  document.querySelector('.navbar a[href="#all-products"]').onclick = function(e) {
+    e.preventDefault();
+    showAllProducts();
+  };
+});
+    // Array of banner images
+    const images = [
+      'https://images.unsplash.com/photo-1516321318423-ffd0859918e1', 
+      'https://images.unsplash.com/photo-1517430816045-df4b7de11d1d', 
+      'https://images.unsplash.com/photo-1498050108023-c5249f4df085'  
+    ];
+    const fallbackImage = 'https://images.unsplash.com/photo-1504707748692-419802cf939d'; 
+    let currentImageIndex = 0;
+
+    function updateBannerImage() {
+      const banner = document.getElementById('banner');
+      const img = new Image();
+      img.src = images[currentImageIndex];
+      img.onload = () => {
+        banner.style.background = `url('${img.src}') no-repeat center center/cover`;
+      };
+      img.onerror = () => {
+        console.warn(`Failed to load image: ${img.src}, using fallback`);
+        banner.style.background = `url('${fallbackImage}') no-repeat center center/cover`;
+      };
+    }
+    function nextSlide() {
+      currentImageIndex = (currentImageIndex + 1) % images.length;
+      updateBannerImage();
+    }
+    function prevSlide() {
+      currentImageIndex = (currentImageIndex - 1 + images.length) % images.length;
+      updateBannerImage();
+    }
+    updateBannerImage();
+
+    function updateAuthLinks() {
+      const authLinks = document.getElementById('auth-links');
+      const user = JSON.parse(localStorage.getItem('loggedInUser'));
+      if (user) {
+        authLinks.innerHTML = `
+          <span id="user-name" style="color: white; cursor: pointer;">Hello, ${user.name}</span> |
+          <a href="#" onclick="logout()" style="color: white; text-decoration: none;">Logout</a> |
+          <a href="#" onclick="toggleCart()" style="color: white; text-decoration: none;">🛒 <span id="cart-count" class="cart-badge">0</span></a>
+        `;
+      }
+      // Gắn sự kiện click cho tên người dùng
+      const userNameSpan = document.getElementById('user-name');
+      if (userNameSpan) {
+        userNameSpan.onclick = function() {
+          const user = JSON.parse(localStorage.getItem('loggedInUser')) || {};
+          document.getElementById('modal-avatar').src = user.avatar || "https://i.pravatar.cc/150?u=" + (user.email || "default");
+          document.getElementById('modal-name').textContent = user.name || "";
+          document.getElementById('modal-email').textContent = "Email: " + (user.email || "");
+          document.getElementById('modal-phone').textContent = "Phone: " + (user.phone || "");
+          document.getElementById('account-modal').style.display = 'block';
+        };
+      }
+    }
+
+    function logout() {
+      localStorage.removeItem('loggedInUser');
+      window.location.href = 'asm.html';
+    }
+
+    // Format price to VND
+    function formatVND(price) {
+      return parseFloat(price).toLocaleString('vi-VN') + ' VND';
+    }
+
+    // Add product to cart and update cart display
+    let pendingAddToCart = null;
+
+    function addToCart(name, price, image, color = '') {
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        const existingItem = cart.find(item => item.name === name && item.color === color);
+        if (existingItem) {
+            existingItem.quantity += 1;
+        } else {
+            cart.push({ name, price, image, color, quantity: 1 });
+        }
+        localStorage.setItem('cart', JSON.stringify(cart));
+            alert(`${name} (${color ? 'Color: ' + color : 'No color'}) has been added to your cart!`);
+            updateCartBadge();
+    }
+
+    // Biến toàn cục để lưu sản phẩm đang chọn màu
+    let currentProduct = null;
+    let selectedColor = null;
+
+    function chooseColor(productName) {
+      const product = allProducts.find(p => p.name === productName);
+      if (!product) return;
+      currentProduct = product;
+      selectedColor = null;
+      // Hiển thị thông tin sản phẩm
+      document.getElementById('color-product-name').textContent = product.name;
+      document.getElementById('color-product-price').textContent = `Giá: ${formatVND(product.price)}`;
+
+      const colorOptionsDiv = document.getElementById('color-options');
+      colorOptionsDiv.innerHTML = '';
+
+      // Lấy danh sách màu
+      let colors = [];
+      if (Array.isArray(product.color)) {
+        colors = product.color;
+      } else if (typeof product.color === 'string') {
+        colors = product.color.split(',').map(c => c.trim());
+      }
+      colors.forEach((color, idx) => {
+        const colorValue = color.trim();
+        const colorClass = getColorClass(colorValue);
+        
+        colorOptionsDiv.innerHTML += `
+          <div class="color-option" onclick="selectColor('${colorValue}', this)">
+            <div class="color-circle ${colorClass}" style="background-color: ${getColorValue(colorValue)};"></div>
+            <span class="color-name">${colorValue}</span>
+          </div>
+        `;
+      });
+
+      // Chọn màu đầu tiên mặc định
+      if (colors.length > 0) {
+        selectColor(colors[0].trim(), colorOptionsDiv.querySelector('.color-option'));
+      }
+
+      document.getElementById('color-modal').style.display = 'block';
+    }
+
+    function selectColor(color, element) {
+      selectedColor = color;
+      
+      // Bỏ chọn tất cả
+      document.querySelectorAll('.color-option').forEach(opt => {
+        opt.classList.remove('selected');
+      });
+      
+      // Chọn màu được click
+      element.classList.add('selected');
+    }
+
+    function getColorClass(colorName) {
+      const colorMap = {
+        'Black': 'color-black',
+        'White': 'color-white', 
+        'Silver': 'color-silver',
+        'Gold': 'color-gold',
+        'Blue': 'color-blue',
+        'Red': 'color-red',
+        'Green': 'color-green',
+        'Purple': 'color-purple',
+        'Pink': 'color-pink',
+        'Brown': 'color-brown',
+        'Gray': 'color-gray',
+        'Yellow': 'color-yellow',
+        'Orange': 'color-orange'
+      };
+      return colorMap[colorName] || 'color-default';
+    }
+
+    function getColorValue(colorName) {
+      const colorMap = {
+        'Black': '#000000',
+        'White': '#ffffff',
+        'Silver': '#c0c0c0',
+        'Gold': '#ffd700',
+        'Blue': '#0000ff',
+        'Red': '#ff0000',
+        'Green': '#008000',
+        'Purple': '#800080',
+        'Pink': '#ffc0cb',
+        'Brown': '#8b4513',
+        'Gray': '#808080',
+        'Yellow': '#ffff00',
+        'Orange': '#ffa500'
+      };
+      return colorMap[colorName] || '#cccccc';
+    }
+
+    function closeColorModal() {
+      document.getElementById('color-modal').style.display = 'none';
+      currentProduct = null;
+      selectedColor = null;
+    }
+
+    // Update cart modal content and badge
+    function updateCart() {
+      const cart = JSON.parse(localStorage.getItem('cart')) || [];
+      const cartItems = document.getElementById('cart-items');
+      const cartTotal = document.getElementById('cart-total');
+      const cartCountElement = document.getElementById('cart-count');
+
+      // Update badge
+      const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+      if (cartCountElement) {
+        cartCountElement.textContent = totalItems;
+        cartCountElement.style.display = totalItems > 0 ? 'inline-block' : 'none';
+      }
+
+      // Update cart modal
+      if (cartItems) {
+        cartItems.innerHTML = '';
+        let totalPrice = 0;
+        cart.forEach((item, index) => {
+          const itemPrice = parseFloat(item.price) * item.quantity;
+          totalPrice += itemPrice;
+          cartItems.innerHTML += `
+            <div class="cart-item">
+              <img src="${item.image}" alt="${item.name}">
+              <div class="cart-item-details">
+                <h4>${item.name}${item.color ? ' - ' + item.color : ''}</h4>
+                <p>Price: ${formatVND(item.price)}</p>
+                <p>Quantity: <input type="number" value="${item.quantity}" min="1" onchange="updateQuantity(${index}, this.value)"></p>
+                <button onclick="removeFromCart(${index})">Remove</button>
+              </div>
+            </div>
+          `;
+        });
+        cartTotal.textContent = `Total: ${formatVND(totalPrice)}`;
+      }
+    }
+
+    // Update quantity of a cart item
+    function updateQuantity(index, quantity) {
+      const cart = JSON.parse(localStorage.getItem('cart')) || [];
+      quantity = parseInt(quantity);
+      if (quantity < 1) quantity = 1;
+      cart[index].quantity = quantity;
+      localStorage.setItem('cart', JSON.stringify(cart));
+      updateCart();
+    }
+
+    // Remove item from cart
+    function removeFromCart(index) {
+      const cart = JSON.parse(localStorage.getItem('cart')) || [];
+      cart.splice(index, 1);
+      localStorage.setItem('cart', JSON.stringify(cart));
+      updateCart();
+    }
+
+    // Clear entire cart
+    function clearCart() {
+      localStorage.removeItem('cart');
+      updateCart();
+    }
+
+    // Checkout function
+    function checkout() {
+      const cart = JSON.parse(localStorage.getItem('cart')) || [];
+      if (cart.length === 0) {
+        alert('Your cart is empty!');
+        return;
+      }
+      const user = JSON.parse(localStorage.getItem('loggedInUser'));
+      if (!user) {
+        alert('Please log in to proceed with your purchase!');
+        window.location.href = 'login.html';
+        return;
+      }
+      alert('Your order has been placed successfully!');
+      localStorage.removeItem('cart');
+      updateCart();
+    }
+
+    // Toggle cart modal visibility
+    function toggleCart() {
+      const cartModal = document.getElementById('cart-modal');
+      cartModal.style.display = cartModal.style.display === 'block' ? 'none' : 'block';
+      updateCart();
+    }
+
+    // Product data for filtering
+    const allProducts = [
+      {
+        name: "Sony WF-1000XM4 Earbuds",
+        image: "html picture/ảnh 1.webp",
+        price: 4190000,
+        description: "Tai nghe chống ồn cao cấp, pin 8h, Bluetooth 5.2, sạc nhanh.",
+        color: ["Black", "White"],
+        weight: "7g",
+        frequency: "20Hz-40kHz",
+        specs: {
+          Bluetooth: "5.2",
+          Pin: "8h"
+        },
+        category: "Earphones & Headphones",
+        brand: "Sony"
+      },
+      {
+        name: "Bose QuietComfort 45 Headphones",
+        image: "html picture/ảnh 2.jpg",
+        price: 8990000,
+        description: "Tai nghe chống ồn chủ động, pin 24h, âm thanh sống động.",
+        color: ["Black", "White"],
+        weight: "240g",
+        frequency: "20Hz-20kHz",
+        specs: {
+          Bluetooth: "5.1",
+          Pin: "24h"
+        },
+        category: "Earphones & Headphones",
+        brand: "Bose"
+      },
+      {
+        name: "JBL Flip 6 Bluetooth Speaker",
+        image: "html picture/ảnh 3.jpg",
+        price: 2990000,
+        description: "Loa di động chống nước, pin 12h, âm bass mạnh mẽ.",
+        color: ["Blue", "Red"],
+        weight: "550g",
+        frequency: "65Hz-20kHz",
+        specs: {
+          Bluetooth: "5.1",
+          Pin: "12h"
+        },
+        category: "Bluetooth Speakers",
+        brand: "JBL"
+      },
+      {
+        name: "UE Wonderboom 3 Speaker",
+        image: "html picture/ảnh 4.jpg",
+        price: 1790000,
+        description: "Loa Bluetooth chống nước, pin 14h, âm thanh 360 độ.",
+        color: ["Black", "Blue"],
+        weight: "420g",
+        frequency: "80Hz-20kHz",
+        specs: {
+          Bluetooth: "5.0",
+          Pin: "14h"
+        },
+        category: "Wearables",
+        brand: "UE"
+      },
+      {
+        name: "Logitech MX Master 3S Mouse",
+        image: "html picture/ảnh 5.jpg",
+        price: 2490000,
+        description: "Chuột không dây cao cấp, cảm biến 8000 DPI, sạc nhanh USB-C.",
+        color: ["Black", "Gray"],
+        weight: "141g",
+        frequency: "125Hz",
+        specs: {
+          DPI: "8000",
+          Pin: "70 ngày"
+        },
+        category: "Computer Mice",
+        brand: "Logitech"
+      },
+      {
+        name: "Razer DeathAdder V2 Mouse",
+        image: "html picture/ảnh 6.jpg",
+        price: 550000,
+        description: "Chuột gaming, cảm biến 20000 DPI, thiết kế công thái học.",
+        color: ["Black"],
+        weight: "82g",
+        frequency: "1000Hz",
+        specs: {
+          DPI: "20000",
+          Switch: "Optical"
+        },
+        category: "Computer Mice",
+        brand: "Razer"
+      },
+      {
+        name: "Keychron K8 Mechanical Keyboard",
+        image: "html picture/ảnh 7",
+        price: 2290000,
+        description: "Bàn phím cơ không dây, hỗ trợ Mac/Windows, pin 4000mAh.",
+        color: ["Black", "White"],
+        weight: "740g",
+        frequency: "1000Hz",
+        specs: {
+          Switch: "Gateron",
+          Pin: "4000mAh"
+        },
+        category: "Keyboards",
+        brand: "Keychron"
+      },
+      {
+        name: "Logitech G Pro X Keyboard",
+        image: "html picture/ảnh 8.jpg",
+        price: 2290000,
+        description: "Bàn phím cơ gaming, switch hot-swappable, thiết kế nhỏ gọn.",
+        color: ["Black"],
+        weight: "980g",
+        frequency: "1000Hz",
+        specs: {
+          Switch: "GX Blue",
+          Led: "RGB"
+        },
+        category: "Keyboards",
+        brand: "Logitech"
+      },
+      {
+        name: "Anker PowerCore 20000mAh Power Bank",
+        image: "html picture/ảnh 9",
+        price: 960000,
+        description: "Sạc dự phòng dung lượng lớn, 2 cổng USB, sạc nhanh.",
+        color: ["Black", "White"],
+        weight: "350g",
+        frequency: "-",
+        specs: {
+          Capacity: "20000mAh",
+          Output: "18W"
+        },
+        category: "Power Banks",
+        brand: "Anker"
+      },
+      {
+        name: "Xiaomi Mi Power Bank 3 10000mAh",
+        image: "html picture/ảnh 10.jpg",
+        price: 490000,
+        description: "Sạc dự phòng nhỏ gọn, 2 cổng USB, sạc nhanh 18W.",
+        color: ["Black", "Silver"],
+        weight: "230g",
+        frequency: "-",
+        specs: {
+          Capacity: "10000mAh",
+          Output: "18W"
+        },
+        category: "Power Banks",
+        brand: "Xiaomi"
+      },
+      {
+        name: "Apple AirPods Pro",
+        image: "html picture/ảnh 11.jpg",
+        price: 5990000,
+        description: "Tai nghe true wireless, chống ồn chủ động, sạc không dây.",
+        color: ["White"],
+        weight: "5.4g",
+        frequency: "20Hz-20kHz",
+        specs: {
+          Bluetooth: "5.0",
+          Pin: "4.5h"
+        },
+        category: "Wearables",
+        brand: "Apple"
+      },
+      {
+        name: "Samsung Galaxy Buds2",
+        image: "html picture/ảnh 12",
+        price: 2990000,
+        description: "Tai nghe không dây, chống ồn chủ động, pin 20h.",
+        color: ["Black", "White", "Green"],
+        weight: "5g",
+        frequency: "20Hz-20kHz",
+        specs: {
+          Bluetooth: "5.2",
+          Pin: "20h"
+        },
+        category: "Wearables",
+        brand: "Samsung"
+      },
+      {
+        name: "Sandisk 128GB USB 3.0",
+        image: "html picture/ảnh 14",
+        price: 350000,
+        description: "USB 3.0, dung lượng 128GB, tốc độ đọc 100MB/s, ghi 30MB/s.",
+        color: ["Black", "Silver"],
+        weight: "10g",
+        frequency: "-",
+        specs: {
+          Capacity: "128GB",
+          ReadSpeed: "100MB/s",
+          WriteSpeed: "30MB/s"
+        },
+        category: "Storage",
+        brand: "Sandisk"
+      },
+      {
+        name: "iPad Pro 12.9 (2022)",
+        image: "html picture/ảnh 15",
+        price: 28990000,
+        description: "Màn hình Liquid Retina XDR, CPU M1 Max, 16GB RAM, 1TB SSD.",
+        color: ["Black", "Silver"],
+        weight: "600g",
+        frequency: "-",
+        specs: {
+          Display: "Liquid Retina XDR",
+          CPU: "M1 Max",
+          RAM: "16GB",
+          Storage: "1TB SSD"
+        },
+        category: "Laptops",
+        brand: "Apple"
+      },
+      {
+        name: "Apple Watch Series 8",
+        image: "html picture/ảnh 16",
+        price: 10990000,
+        description: "Màn hình Retina, CPU S8, 32GB SSD, pin 18h, chống nước.",
+        color: ["Black", "Silver", "Gold"],
+        weight: "40g",
+        frequency: "-",
+        specs: {
+          Display: "Retina",
+          CPU: "S8",
+          Storage: "32GB",
+          Battery: "18h",
+          WaterResistant: "Yes"
+        },
+        category: "Wearables",
+        brand: "Apple"
+      },
+      {
+        name: "GoPro HERO10 Black",
+        image: "html picture/ảnh 17",
+        price: 9990000,
+        description: "Quay phim 5K, chống rung, pin 16h, chống nước.",
+        color: ["Black"],
+        weight: "150g",
+        frequency: "-",
+        specs: {
+          Resolution: "5K",
+          Stabilization: "Yes",
+          Battery: "16h",
+          WaterResistant: "Yes"
+        },
+        category: "Cameras",
+        brand: "GoPro"
+      },
+      {
+        name: "Fitbit Charge 5",
+        image: "html picture/ảnh 18",
+        price: 3490000,
+        description: "Theo dõi sức khỏe 24/7, pin 10 ngày, chống nước.",
+        color: ["Black", "Silver"],
+        weight: "30g",
+        frequency: "-",
+        specs: {
+          HealthTracking: "24/7",
+          Battery: "10 days",
+          WaterResistant: "Yes"
+        },
+        category: "Wearables",
+        brand: "Fitbit"
+      },
+      {
+        name: "Dell XPS 13 Laptop",
+        image: "html picture/ảnh 19",
+        price: 32990000,
+        description: "Màn hình InfinityEdge, CPU Intel, 16GB RAM, 1TB SSD.",
+        color: ["Black", "Silver"],
+        weight: "1.2kg",
+        frequency: "-",
+        specs: {
+          Display: "InfinityEdge",
+          CPU: "Intel",
+          RAM: "16GB",
+          Storage: "1TB SSD"
+        },
+        category: "Laptops",
+        brand: "Dell"
+      },
+      {
+        name: "WD My Passport 2TB",
+        image: "html picture/ảnh 20",
+        price: 2190000,
+        description: "USB 3.0, dung lượng 2TB, pin 1000mAh, sạc nhanh.",
+        color: ["Black", "Silver"],
+        weight: "200g",
+        frequency: "-",
+        specs: {
+          Capacity: "2TB",
+          USB: "3.0",
+          Battery: "1000mAh",
+          FastCharge: "Yes"
+        },
+        category: "Storage",
+        brand: "WD"
+      },
+      {
+        name: "Samsung Galaxy Buds Pro",
+        image: "html picture/Samsung Galaxy Buds Pro.jpg",
+        price: 3990000,
+        description: "Tai nghe không dây, chống ồn chủ động, pin 18h, chống nước IPX7.",
+        color: ["Black", "White", "Purple"],
+        weight: "6.3g",
+        frequency: "20Hz-20kHz",
+        specs: {
+          Bluetooth: "5.0",
+          Pin: "18h",
+          WaterResistant: "IPX7"
+        },
+        category: "Earphones & Headphones",
+        brand: "Samsung"
+      },
+      {
+        name: "Sony SRS-XB43 Speaker",
+        image: "html picture/Sony SRS-XB43 Speaker.jpg",
+        price: 4590000,
+        description: "Loa Bluetooth EXTRA BASS, chống nước IP67, pin 24h, đèn LED.",
+        color: ["Black", "Blue", "Red"],
+        weight: "2.4kg",
+        frequency: "20Hz-20kHz",
+        specs: {
+          Bluetooth: "5.0",
+          Pin: "24h",
+          WaterResistant: "IP67"
+        },
+        category: "Bluetooth Speakers",
+        brand: "Sony"
+      },
+      {
+        name: "Xiaomi Mi Power Bank 3 Pro",
+        image: "html picture/Xiaomi Mi Power Bank 3 Pro.jpg",
+        price: 790000,
+        description: "Sạc dự phòng 20000mAh, sạc nhanh 45W, 2 cổng USB-C.",
+        color: ["Black", "Silver"],
+        weight: "435g",
+        frequency: "-",
+        specs: {
+          Capacity: "20000mAh",
+          Output: "45W",
+          Ports: "USB-C x2"
+        },
+        category: "Power Banks",
+        brand: "Xiaomi"
+      },
+      {
+        name: "Asus ROG Zephyrus G14",
+        image: "html picture/Asus ROG Zephyrus G14.jpg",
+        price: 34990000,
+        description: "Laptop gaming, Ryzen 9, RTX 3060, 16GB RAM, 1TB SSD, màn hình 120Hz.",
+        color: ["Black", "White"],
+        weight: "1.7kg",
+        frequency: "-",
+        specs: {
+          CPU: "Ryzen 9",
+          GPU: "RTX 3060",
+          RAM: "16GB",
+          Storage: "1TB SSD",
+          Display: "120Hz"
+        },
+        category: "Laptops",
+        brand: "Asus"
+      },
+      {
+        name: "Huawei Watch GT 3",
+        image: "html picture/Huawei Watch GT 3.jpg",
+        price: 5490000,
+        description: "Smartwatch, màn hình AMOLED, pin 14 ngày, theo dõi sức khỏe.",
+        color: ["Black", "Silver", "Brown"],
+        weight: "42.6g",
+        frequency: "-",
+        specs: {
+          Display: "AMOLED",
+          Battery: "14 days",
+          HealthTracking: "Yes"
+        },
+        category: "Wearables",
+        brand: "Huawei"
+      },
+      {
+        name: "Canon EOS R6",
+        image: "html picture/Canon EOS R6.jpg",
+        price: 49990000,
+        description: "Máy ảnh mirrorless, cảm biến full-frame, quay phim 4K, ống kính RF.",
+        color: ["Black"],
+        weight: "680g",
+        frequency: "-",
+        specs: {
+          Sensor: "Full-frame",
+          Video: "4K",
+          LensMount: "RF"
+        },
+        category: "Cameras",
+        brand: "Canon"
+      },
+      {
+        name: "Seagate Expansion 5TB",
+        image: "html picture/ảnh 26.jpg",
+        price: 3290000,
+        description: "Ổ cứng gắn ngoài USB 3.0, dung lượng 5TB, thiết kế nhỏ gọn.",
+        color: ["Black", "Silver"],
+        weight: "230g",
+        frequency: "-",
+        specs: {
+          Capacity: "5TB",
+          Interface: "USB 3.0"
+        },
+        category: "Storage",
+        brand: "Seagate"
+      },
+      {
+        name: "SteelSeries Rival 3",
+        image: "html picture/ảnh 27.jpg",
+        price: 890000,
+        description: "Chuột gaming, cảm biến 8500 DPI, RGB, thiết kế công thái học.",
+        color: ["Black", "White"],
+        weight: "77g",
+        frequency: "1000Hz",
+        specs: {
+          DPI: "8500",
+          PollingRate: "1000Hz",
+          RGB: "Yes"
+        },
+        category: "Computer Mice",
+        brand: "SteelSeries"
+      },
+      {
+        name: "Corsair K70 RGB",
+        image: "html picture/ảnh 28.jpg",
+        price: 3990000,
+        description: "Bàn phím cơ gaming, switch Cherry MX, đèn RGB, khung nhôm.",
+        color: ["Black"],
+        weight: "1.2kg",
+        frequency: "1000Hz",
+        specs: {
+          Switch: "Cherry MX",
+          RGB: "Yes",
+          Frame: "Aluminum"
+        },
+        category: "Keyboards",
+        brand: "Corsair"
+      },
+      {
+        name: "Audio-Technica ATH-M50x",
+        image: "html picture/ảnh 29.jpg",
+        price: 4290000,
+        description: "Tai nghe monitor, driver 45mm, âm thanh chính xác, gập xoay.",
+        color: ["Black", "White"],
+        weight: "285g",
+        frequency: "15Hz-28kHz",
+        specs: {
+          Driver: "45mm",
+          Frequency: "15Hz-28kHz",
+          Foldable: "Yes"
+        },
+        category: "Earphones & Headphones",
+        brand: "Audio-Technica"
+      }
+    ];
+
+    function filterByBrand(brand) {
+      const filtered = allProducts.filter(p => p.brand === brand);
+      renderProducts(filtered);
+    }
+
+    function showAllProducts() {
+      renderProducts(allProducts);
+    }
+
+    function filterByCategory(category) {
+      const filtered = allProducts.filter(p => p.category === category);
+      renderProducts(filtered);
+    }
+
+    function showBestsellers() {
+      const bestsellers = allProducts.filter(p => p.bestseller);
+      // Hiển thị tối đa 6 sản phẩm ở trang Home
+      renderProducts(bestsellers.slice(0, 6), true);
+    }
+
+    function searchProducts() {
+      const keyword = document.getElementById('search-input').value.trim().toLowerCase();
+      if (!keyword) {
+        showAllProducts();
+        return;
+      }
+      const filtered = allProducts.filter(p => p.name.toLowerCase().includes(keyword));
+      renderProducts(filtered);
+    }
+    updateAuthLinks();
+    showBestsellers(); 
+    document.querySelector('.navbar a[href="#all-products"]').addEventListener('click', showAllProducts);
+    function showProductDetail(name) {
+      const product = allProducts.find(p => p.name === name);
+      if (!product) return;
+      document.getElementById('detail-name').textContent = product.name;
+      document.getElementById('detail-image').src = product.image;
+      document.getElementById('detail-description').textContent = product.description || 'No description.';
+
+      // Hiển thị màu sắc
+      let colorText = 'Unknown';
+      if (Array.isArray(product.color)) {
+        colorText = product.color.join(', ');
+      } else if (typeof product.color === 'string') {
+        colorText = product.color;
+      }
+      document.getElementById('detail-color').textContent = colorText;
+
+      // Hiển thị trọng lượng và tần số
+      let extraInfo = '';
+      if (product.weight) {
+        extraInfo += `<p><strong>Weight:</strong> ${product.weight}</p>`;
+      }
+      if (product.frequency) {
+        extraInfo += `<p><strong>Frequency:</strong> ${product.frequency}</p>`;
+      }
+      document.getElementById('detail-extra') ? 
+        document.getElementById('detail-extra').innerHTML = extraInfo :
+        (() => {
+          const specsDiv = document.getElementById('detail-specs');
+          specsDiv.insertAdjacentHTML('beforebegin', `<div id="detail-extra">${extraInfo}</div>`);
+        })();
+
+      // Render specs
+      const specsDiv = document.getElementById('detail-specs');
+      specsDiv.innerHTML = '';
+      if (product.specs) {
+        specsDiv.innerHTML = '<strong>Specifications:</strong><ul style="padding-left: 20px;">' +
+          Object.entries(product.specs).map(([k, v]) => `<li>${k}: ${v}</li>`).join('') +
+          '</ul>';
+      } else {
+        specsDiv.innerHTML = '<strong>Specifications:</strong> None';
+      }
+
+      document.getElementById('product-detail-modal').style.display = 'block';
+    }
+    function toggleProductDetail() {
+      document.getElementById('product-detail-modal').style.display = 'none';
+    }
+  </script>
+  <script>
+window.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('.details-btn').forEach(function(btn) {
+    btn.onclick = function() {
+      document.getElementById('detail-name').textContent = btn.dataset.name;
+      document.getElementById('detail-image').src = btn.dataset.image;
+      document.getElementById('detail-description').textContent = btn.dataset.description || 'No description.';
+      document.getElementById('detail-color').textContent = btn.dataset.color || 'Unknown';
+      let extraInfo = '';
+      if (btn.dataset.weight) extraInfo += `<p><strong>Weight:</strong> ${btn.dataset.weight}</p>`;
+      if (btn.dataset.frequency) extraInfo += `<p><strong>Frequency:</strong> ${btn.dataset.frequency}</p>`;
+      document.getElementById('detail-extra').innerHTML = extraInfo;
+      document.getElementById('detail-specs').innerHTML = btn.dataset.specs
+        ? `<strong>Specifications:</strong> <ul style='padding-left:20px;'><li>${btn.dataset.specs.replace(/; /g,'</li><li>')}</li></ul>`
+        : '<strong>Specifications:</strong> None';
+      document.getElementById('product-detail-modal').style.display = 'block';
+    };
+  });
+});
+  </script>
+  <script>
+// Thêm sản phẩm vào giỏ hàng bằng localStorage
+window.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('.add-to-cart').forEach(function(btn) {
+    btn.onclick = function() {
+      var productDiv = btn.closest('.product');
+      var name = productDiv.querySelector('h4').textContent;
+      var price = productDiv.querySelector('p').textContent.replace('Price: ', '').replace('đ','').replace(/\./g,'').trim();
+      var image = productDiv.querySelector('img').getAttribute('src');
+      var cart = JSON.parse(localStorage.getItem('cart')) || [];
+      var existing = cart.find(item => item.name === name);
+      if (existing) {
+        existing.quantity += 1;
+      } else {
+        cart.push({ name, price, image, quantity: 1 });
+      }
+      localStorage.setItem('cart', JSON.stringify(cart));
+      alert('Đã thêm sản phẩm vào giỏ hàng!');
+    };
+  });
+});
+  </script>
+  <script>
+document.querySelector('.auth-form form').onsubmit = function(e) {
+  e.preventDefault();
+  const name = document.getElementById('name').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const phone = document.getElementById('phone').value.trim();
+  const password = document.getElementById('password').value;
+  const confirmPassword = document.getElementById('confirm-password').value;
+
+  if (!name || !email || !phone || !password || !confirmPassword) {
+    alert('Please fill in all fields.');
+    return;
+  }
+  if (password !== confirmPassword) {
+    alert('Passwords do not match.');
+    return;
+  }
+
+  let users = JSON.parse(localStorage.getItem('users')) || [];
+  if (users.find(u => u.email === email)) {
+    alert('Email is already registered.');
+    return;
+  }
+
+  users.push({ name, email, phone, password });
+  localStorage.setItem('users', JSON.stringify(users));
+  alert('Registration successful! Please login.');
+  window.location.href = 'login.html';
+};
+</script>
+<div id="account-modal" style="display:none; position:fixed; top:50px; right:50px; background:#fff; border:1px solid #ccc; border-radius:8px; box-shadow:0 2px 8px rgba(0,0,0,0.2); padding:20px; z-index:1000; min-width:250px;">
+  <div style="text-align:center; position:relative;">
+    <span id="close-account-modal" style="position:absolute; top:10px; right:15px; font-size:24px; cursor:pointer;">×</span>
+    <img id="modal-avatar" src="" alt="Avatar" style="width:80px; height:80px; border-radius:50%; object-fit:cover; margin-bottom:10px; cursor:pointer;">
+    <input type="file" id="avatar-input" accept="image/*" style="display:none;">
+    <h3 id="modal-name"></h3>
+    <p id="modal-email" style="text-align:left; margin: 0 0 5px 0;"></p>
+    <p id="modal-phone" style="text-align:left; margin: 0 0 5px 0;"></p>
+    <div style="margin-top:20px; text-align:left;">
+      <h4 id="show-change-password" style="color:#007bff; cursor:pointer; margin:0 0 10px 0; font-weight:normal; display:inline-block;">Change Password</h4>
+      <div id="change-password-form" style="display:none;">
+        <input type="password" id="old-password" placeholder="Current password" style="width:90%;margin-bottom:5px;"><br>
+        <input type="password" id="new-password" placeholder="New password" style="width:90%;margin-bottom:5px;"><br>
+        <input type="password" id="confirm-password" placeholder="Confirm new password" style="width:90%;margin-bottom:5px;"><br>
+        <button id="change-password-btn" style="width:100%;">Change Password</button>
+        <p id="change-password-msg" style="color:red; margin:5px 0 0 0; font-size:13px;"></p>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+// Khi click vào avatar thì mở chọn file
+document.getElementById('modal-avatar').onclick = function() {
+  document.getElementById('avatar-input').click();
+};
+document.getElementById('user-avatar').onclick = function() {
+  document.getElementById('avatar-input').click();
+};
+reader.onload = function(e) {
+  const newAvatar = e.target.result;
+  document.getElementById('modal-avatar').src = newAvatar;
+  
+  let user = JSON.parse(localStorage.getItem('loggedInUser')) || {};
+  user.avatar = newAvatar;
+  localStorage.setItem('loggedInUser', JSON.stringify(user));
+  localStorage.setItem(`avatar_${user.email}`, newAvatar);
+  
+  updateUserInfo(); // Quan trọng: Cập nhật giao diện ngay lập tức
+};
+console.log('User data:', JSON.parse(localStorage.getItem('loggedInUser')));
+console.log('Avatar URL:', localStorage.getItem(`avatar_${user.email}`));
+// Hàm xử lý upload avatar
+document.getElementById('avatar-input').onchange = function(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const newAvatar = e.target.result;
+    document.getElementById('modal-avatar').src = newAvatar;
+    const user = JSON.parse(localStorage.getItem('loggedInUser')) || {};
+    user.avatar = newAvatar;
+    localStorage.setItem('loggedInUser', JSON.stringify(user));
+    localStorage.setItem(`avatar_${user.email}`, newAvatar);
+    
+    // Cập nhật toàn bộ giao diện
+    updateUserInfo(); // Quan trọng: Gọi hàm n
+  };
+  reader.readAsDataURL(file);
+};
+
+document.getElementById('close-account-modal').onclick = function() {
+document.getElementById('account-modal').style.display = 'none';
+};
+
+document.getElementById('change-password-btn').onclick = function() {
+  const oldPass = document.getElementById('old-password').value;
+  const newPass = document.getElementById('new-password').value;
+  const confirmPass = document.getElementById('confirm-password').value;
+  const msg = document.getElementById('change-password-msg');
+  msg.textContent = "";
+  let user = JSON.parse(localStorage.getItem('loggedInUser')) || {};
+  let users = JSON.parse(localStorage.getItem('users')) || [];
+  const idx = users.findIndex(u => u.email === user.email);
+  if (!oldPass || !newPass || !confirmPass) {
+    msg.textContent = "Please fill in all fields.";
+    return;
+  }
+  if (newPass !== confirmPass) {
+    msg.textContent = "New passwords do not match.";
+    return;
+  }
+  if (!users[idx] || users[idx].password !== oldPass) {
+    msg.textContent = "Current password is incorrect.";
+    return;
+  }
+  users[idx].password = newPass;
+  user.password = newPass;
+  localStorage.setItem('users', JSON.stringify(users));
+  localStorage.setItem('loggedInUser', JSON.stringify(user));
+  msg.style.color = "green";
+  msg.textContent = "Password changed successfully!";
+  setTimeout(() => {
+    document.getElementById('old-password').value = "";
+    document.getElementById('new-password').value = "";
+    document.getElementById('confirm-password').value = "";
+    msg.textContent = "";
+    msg.style.color = "red";
+  }, 2000);
+};
+document.getElementById('show-change-password').onclick = function() {
+  const form = document.getElementById('change-password-form');
+  form.style.display = (form.style.display === 'none' || form.style.display === '') ? 'block' : 'none';
+};
+</script>
+<script>
+document.getElementById('search-input').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') {
+    searchProducts();
+  }
+});
+</script>
+<style>
+  @media (max-width: 900px) {
+    .container {
+      flex-direction: column;
+      padding: 10px;
+    }
+    .sidebar {
+      width: 100%;
+      margin-bottom: 15px;
+      box-sizing: border-box;
+    }
+    .products {
+      padding: 10px;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .header {
+      flex-direction: column;
+      gap: 10px;
+      padding: 10px 5px;
+    }
+    .navbar {
+      flex-direction: column;
+      gap: 10px;
+      padding: 10px 5px;
+      font-size: 16px;
+    }
+  }
+  @media (max-width: 600px) {
+    .container {
+      flex-direction: column;
+      padding: 5px;
+    }
+    .sidebar {
+      padding: 10px;
+    }
+    .products {
+      grid-template-columns: 1fr;
+      padding: 5px;
+      gap: 8px;
+    }
+    .header {
+      flex-direction: column;
+      gap: 8px;
+      padding: 12px 6px;
+    }
+    .logo {
+      font-size: 18px;
+      text-align: center;
+    }
+    .navbar {
+      flex-direction: column;
+      gap: 8px;
+      padding: 8px 2px;
+      font-size: 14px;
+    }
+    .banner {
+      padding: 20px 5px;
+      margin: 10px 0;
+      font-size: 15px;
+    }
+    .banner h2 {
+      font-size: 18px;
+    }
+    .banner p {
+      font-size: 13px;
+    }
+    .footer {
+      flex-direction: column;
+      gap: 10px;
+      padding: 15px 5px;
+      font-size: 12px;
+    }
+    .auth-form {
+      padding: 10px;
+      max-width: 98vw;
+    }
+    .cart-content {
+      width: 98vw;
+      padding: 8px;
+    }
+    .product {
+      padding: 8px 4px;
+    }
+    .product img {
+      height: 90px;
+    }
+    #search-input {
+      width: 100% !important;
+      min-width: 0;
+      margin-bottom: 6px;
+    }
+  }
+  
+  /* Color modal styling */
+  .color-option {
+    display: flex;
+    align-items: center;
+    padding: 12px;
+    margin: 8px 0;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: white;
+  }
+  
+  .color-option:hover {
+    border-color: #ff6f61;
+    background-color: #fff5f5;
+  }
+  
+  .color-option.selected {
+    border-color: #ff6f61;
+    background-color: #fff5f5;
+  }
+  
+  .color-option input[type="radio"] {
+    margin-right: 12px;
+    transform: scale(1.2);
+  }
+  
+  .color-option span {
+    font-size: 16px;
+    font-weight: 500;
+  }
+  
+  /* Search input styling */
+  #search-input {
+    border: none;
+    border-radius: 5px;
+    padding: 8px 12px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+  }
+  
+  #search-input:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(255, 111, 97, 0.3);
+  }
+  
+  /* No results styling */
+  .no-results {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 40px;
+    color: #666;
+    font-size: 18px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+</style>
+
+<script>
+// Search functionality
+function searchProducts() {
+  const searchTerm = document.getElementById('search-input').value.toLowerCase().trim();
+  const products = document.querySelectorAll('.product');
+  
+  products.forEach(product => {
+    const productName = product.querySelector('h4').textContent.toLowerCase();
+    const productCategory = product.getAttribute('data-category').toLowerCase();
+    const productBrand = product.getAttribute('data-brand').toLowerCase();
+    
+    if (productName.includes(searchTerm) || 
+        productCategory.includes(searchTerm) || 
+        productBrand.includes(searchTerm)) {
+      product.style.display = 'block';
+    } else {
+      product.style.display = 'none';
+    }
+  });
+  
+  // Show message if no results
+  const visibleProducts = document.querySelectorAll('.product[style*="display: block"], .product:not([style*="display: none"])');
+  if (visibleProducts.length === 0 && searchTerm !== '') {
+    const productsContainer = document.getElementById('all-products');
+    if (!productsContainer.querySelector('.no-results')) {
+      productsContainer.innerHTML += '<div class="no-results">No products found matching "' + searchTerm + '"</div>';
+    }
+  } else {
+    const noResults = document.querySelector('.no-results');
+    if (noResults) {
+      noResults.remove();
+    }
+  }
+}
+
+// Clear search and show all products
+function clearSearch() {
+  document.getElementById('search-input').value = '';
+  const products = document.querySelectorAll('.product');
+  products.forEach(product => {
+    product.style.display = 'block';
+  });
+  
+  const noResults = document.querySelector('.no-results');
+  if (noResults) {
+    noResults.remove();
+  }
+}
+
+function addToCartWithColor() {
+  if (!currentProduct || !selectedColor) {
+    alert('Please select a color first!');
+    return;
+  }
+  
+  // Add to cart with color information
+  let cart = JSON.parse(localStorage.getItem('cart')) || [];
+  const existingItem = cart.find(item => 
+    item.name === currentProduct.name && item.color === selectedColor
+  );
+  
+  if (existingItem) {
+    existingItem.quantity += 1;
+  } else {
+    cart.push({
+      name: currentProduct.name,
+      price: currentProduct.price,
+      image: currentProduct.image,
+      color: selectedColor,
+      quantity: 1
+    });
+  }
+  
+  localStorage.setItem('cart', JSON.stringify(cart));
+  alert(`${currentProduct.name} (${selectedColor}) has been added to your cart!`);
+  
+  // Update cart display if it exists
+  if (typeof updateCart === 'function') {
+    updateCart();
+  }
+  
+  closeColorModal();
+}
+
+// Add event listener for search input
+document.addEventListener('DOMContentLoaded', function() {
+  const searchInput = document.getElementById('search-input');
+  if (searchInput) {
+    searchInput.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        searchProducts();
+      }
+    });
+  }
+});
+</script>
+
+<script>
+document.getElementById('edit-user-btn').onclick = function() {
+  var user = JSON.parse(localStorage.getItem('loggedInUser')) || {};
+  document.getElementById('edit-name').value = user.name || '';
+  document.getElementById('edit-email').value = user.email || '';
+  document.getElementById('edit-phone').value = user.phone || '';
+  document.getElementById('edit-user-form').style.display = 'block';
+  document.getElementById('edit-user-btn').style.display = 'none';
+};
+document.getElementById('cancel-edit-btn').onclick = function() {
+  document.getElementById('edit-user-form').style.display = 'none';
+  document.getElementById('edit-user-btn').style.display = 'block';
+};
+</script>
+<script>
+document.getElementById('save-user-btn').onclick = function() {
+  var name = document.getElementById('edit-name').value.trim();
+  var email = document.getElementById('edit-email').value.trim();
+  var phone = document.getElementById('edit-phone').value.trim();
+  if (!name || !email) {
+    alert('Name and email cannot be empty!');
+    return;
+  }
+  // Lấy user hiện tại
+  var user = JSON.parse(localStorage.getItem('loggedInUser')) || {};
+  user.name = name;
+  user.email = email;
+  user.phone = phone;
+  localStorage.setItem('loggedInUser', JSON.stringify(user));
+  // Nếu có danh sách users, cập nhật luôn
+  var users = JSON.parse(localStorage.getItem('users')) || [];
+  var idx = users.findIndex(u => u.email === user.email);
+  if (idx !== -1) {
+    users[idx] = user;
+    localStorage.setItem('users', JSON.stringify(users));
+  }
+  document.getElementById('edit-user-form').style.display = 'none';
+  document.getElementById('edit-user-btn').style.display = 'block';
+  updateUserInfo();
+  alert('Information updated successfully!');
+};
+</script>
+</body>
+</html>
